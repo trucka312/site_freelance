@@ -1,0 +1,45 @@
+<section class="hero is-fullheight">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-6-table is-6-desktop is-6-widescreen">
+          <div class="card-template">
+            <div class="field has-text-centered">
+             
+              <h3 class="title is-3">Se connecter</h3>
+            </div>
+
+
+            <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+              <div class="field">
+                <%= f.label "Votre numero de téléphone", class: "label" %>
+                <%= f.phone_field :phone, placeholder: "Votre numero de téléphone", autocomplete: "phone", class: "input input-grey" %>
+              </div>
+
+              <div class="field">
+                <%= f.label "Mot de passe", class: "label" %>
+                <%= f.password_field :password, placeholder: "Mot de passe", autocomplete: "current-password" , class: "input input-grey"%>
+              </div>
+
+              <% if devise_mapping.rememberable? %>
+              <div class="field">
+                <%= f.check_box :remember_me %>
+                <%= f.label "Se souvenir de moi"%>
+              </div>
+            <% end %>
+
+            <div class="actions">
+              <%= f.submit "Se connecter", class: "button is-primary is-fullwidth m-t-10 m-b-10" %>
+            </div>
+            <% end %>
+
+            <%= render "devise/shared/links" %>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+

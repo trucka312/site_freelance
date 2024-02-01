@@ -1,0 +1,27 @@
+<div class="step-content has-text-centered <%= 'is-active' if @step == 5 %>">
+  <div>
+
+    <%= hidden_field_tag 'active', 'true' if @step == 5 %>
+    <strong class="is-size-2">Presque là...</strong>
+    <p>Publions votre annonce et invitons certains acheteurs à participer.</p>
+  </div>
+
+</div>
+
+<div class="field is-grouped is-grouped-centered m-t-25">
+  <p class="control <%= 'is-hidden' if @step <= 1 %>">
+    <%= link_to 'Retour', edit_gig_path(@gig, step: @step -1), class: "button is-light" %>
+  </p>
+
+
+  <p class="control">
+    <% if @step != 5 %>
+    <%= f.submit 'Enregistrer continuer', class: "button is-primary" %>
+    <% else %>
+    <%= link_to 'publier', gig_path(@gig.id, gig: {active: true}, step: @step), method: :put,
+    data: {confirm: "Voulez-vous publier cette annonce"},
+    class: "button is-danger" %>
+    <% end %>
+
+  </p>
+</div>

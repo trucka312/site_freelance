@@ -1,0 +1,162 @@
+<section class="section">
+    <div class="container">
+        <div class="columns">
+        
+            <!-- LEFT SIDE -->
+            <div class="column is-one-third">
+                <div class="columns is-multiline">
+
+                    <!-- Top Card -->
+                    <div class="column is-full">
+                        <div class="card-template">
+
+                            <!-- Avatar -->
+                            <div class="card-content is-horizontal-center is-flex">
+                                <figure class="image is-128x128">
+                                    <%= image_tag avatar_url(current_user), class: "is-rounded" %>
+                                </figure>
+                            </div>
+                            
+                            <div class="card-content">
+
+                                <!-- Upload Button -->
+                                <div class="content has-text-centered">
+                                    <p class="title is-5"><%= current_user.full_name %></p>
+                                    <%= form_for :user, url: users_edit_url(@user), action: :update, method: :post do |f| %>
+                                        <div class="file">
+                                            <label class="button is-primary is-outlined is-fullwidth">
+                                                <%= f.file_field :avatar, class: "file-input", onchange: "this.form.submit();" %>
+                                                <i class="fas fa-upload"></i>&nbsp;&nbsp;&nbsp; Ajouter une photo de profil
+                                            </label>
+                                        </div>
+                                    <% end %>
+                                </div>
+                                <hr class="h-10">
+                                
+                                <!-- Member -->
+                                <article class="media">
+                                    <div class="media-content">Membre depuis</div>
+                                    <div class="media-right">
+                                        <strong><%= current_user.created_at.strftime('%b %Y') %></strong>
+                                    </div>
+                                </article>
+                                <hr class="h-10">
+                                
+                                <!-- From -->
+                                <article>
+                                    <div class="media">
+                                        <div class="media-content">De</div>
+                                        <div class="media-right">
+                                            <strong><%= current_user.from %></strong> <i class="toggle far fa-edit" aria-controls="user-from"></i>
+                                        </div>
+                                    </div>
+
+                                    <div class="content">
+                                        <%= form_for :user, url: users_edit_url(@user), action: :update, method: :post, html: {id: 'user-from', class: 'is-hidden'} do |f| %>
+                                            <div class="field">
+                                                <%= f.text_field :from, autofocus: true, autocomplete: 'form', class: 'input'%>
+                                            </div>
+                                            <a class="toggle button is-light" aria-controls="user-from">Cancel</a>
+                                            <%= f.submit "Save", class: "button is-danger" %>
+                                        <% end %>
+                                    </div>
+
+                                </article>                                
+                                <hr class="h-10">
+
+                                <!-- Online Status -->
+                                <article>
+                                    <div class="media">
+                                        <div class="media-content">Statut en ligne</div>
+                                        <div class="media-right">
+                                            <strong><% if current_user.status %> En ligne <% else %> Hors ligne <% end %></strong> <i class="toggle far fa-edit" aria-controls="user-status"></i>
+                                        </div>
+                                    </div>
+
+                                    <div class="content">
+                                        <%= form_for :user, url: users_edit_url(@user), action: :update, method: :post, html: {id: 'user-status', class: 'is-hidden'} do |f| %>
+                                            <div class="field">
+                                                <%= f.select(:status, options_for_select([["En ligne", true], ["Hors ligne", false]]), {}, {class: "select is-fullwidth"}) %>
+                                            </div>
+                                            <a class="toggle button is-light" aria-controls="user-status">Cancel</a>
+                                            <%= f.submit "Save", class: "button is-danger" %>
+                                        <% end %>
+                                    </div>
+                                </article>
+                                
+                                </article>
+                                  
+                                  <% if @subscription.present? %>
+                                    <hr class="h-10">
+                                    <article>
+                                        <div class="media">
+                                            <div class="media-content">Abonnement</div>
+                                            <div class="media-right">
+                                                <strong><% if @plan %> <%= @plan.nickname %> <% end %></strong> <i class="toggle far fa-edit" aria-controls="user-subscription"></i>
+                                            </div>
+                                        </div>
+
+                                        <div class="content">
+                                            <%= form_with url: remove_subscription_path, method: :delete, html: { id: 'user-subscription', class: 'is-hidden' } do |f| %>
+                                                <small>Expire at: <%= @subscription.expired_at %></small>                 
+                                                <%= f.submit "Annuler un abonnement", class: "button is-danger is-fullwidth m-t-20" %>
+                                            <% end %>
+                                        </div>
+                                    </article>
+                                <% end %>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- RIGHT SIDE -->
+            <div class="column">
+                <div class="columns is-multiline">
+
+                    <!-- Create New Gig -->
+                    <div class="column is-one-third has-text-centered">
+                        <%= link_to new_gig_path do %>
+                            <div class="card-template">
+
+                                <div class="card-image card-content is-horizontal-center is-flex ">
+                                    <figure class="image is-128x128 ">
+                                        <%= image_tag 'icon.png' %>
+                                    </figure>
+                                </div>
+
+                                <div class="card-content">
+                                    <strong>Deposez une annonce</strong>
+                                </div>    
+
+                            </div>
+                        <% end %>
+                    </div>
+
+
+                    <!-- Sample Gig -->
+                    <%= render current_user.gigs %>
+                    
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</section>
+
+<script>
+
+
+function showNotification(type, message) {
+    new Noty({
+        type: type,
+        layout: 'topRight',
+        timeout: 2000,
+        theme: 'sunset',
+        text: message
+    });
+}
+</script>
+
+    

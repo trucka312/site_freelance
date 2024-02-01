@@ -1,0 +1,21 @@
+<% @gigs.each do |gig| %>
+    <div class="column is-one-quarter">
+        <div class="annonces">
+            <div class="card-image">
+                <%= link_to gig_path(gig) do %>
+                    <figure class="image is-4by3">
+                        <%= image_tag gig_cover(gig) %>
+                    </figure>
+                <% end %>
+            </div>
+            <div class="card-content p-b-5">
+                <div class="media">
+                    <div class="media-content">
+                        <p class="title is-6"><%= link_to gig.title.truncate(20), gig_path(gig) %></p>
+                        <p class="subtitle is-8"><%= gig.price %> fcfa</p>
+                    </div>
+                </div>                                    
+            </div>
+        </div>
+    </div>
+<% end %>

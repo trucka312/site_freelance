@@ -1,0 +1,96 @@
+<nav class="navbar header-grey" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="/">
+            <img src="/assets/logol.png" alt="Likebay ko somba pé ko téka" width="44" height="44", class="logo-img">
+        </a>
+
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+
+      <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+            <div id="search-button" class="navbar-link is-arrowless" data-search data-reflex-permanent></div>
+        </div>
+
+        <div class="navbar-end">
+            <%#= link_to 'Acceuil', plans_path, class: "navbar-item" %>
+            <div class="navbar-item is-hoverable is-mega">
+                <%#= link_to 'Categories', search_path, class: "navbar-link is-arrowless" %>
+            </div>
+
+            
+            <%#= link_to 'Abonnement', plans_path, class: "navbar-item" %>
+            <%= link_to 'Poster annonces', new_gig_path, class: "navbar-item" %>
+
+            <%# if basket_has_items %>
+                <%= link_to basket_path(@basket), class:"navbar-item is-warning" do %>
+                    <span class="icon is-small basket-icon">
+                        <i class="fa fa-shopping-cart"></i>
+                    </span>
+                    <span><%= basket_count_over_one %></span>
+                <% end %>
+            <%# end %>
+
+            <% if (!user_signed_in?) %>
+                <div class="navbar-item">
+                    <div class="buttons">
+                        <%= link_to  "Se connecter",  new_user_session_path, class: "button is-success" %>
+                        <%= link_to  "S'enregistrer", new_user_registration_path, class: "button is-warning" %>
+                    </div>
+                </div>
+            <% else %>
+                <div class="navbar-item has-dropdown is-hoverable ">
+                    <a class="navbar-link">
+                        <figure class="image is-24x24 m-r-5">
+                            <%= image_tag avatar_url(current_user), class: "is-rounded" %>
+                        </figure>
+                        <%= current_user.full_name %>
+                    </a>
+
+                    <div class="navbar-dropdown">
+                        <%= link_to  "Profile", edit_user_registration_path, class: "navbar-item" %>
+                        <%= link_to 'Tableau de bord', dashboard_path, class: "navbar-item" %>
+                        <hr class="navbar-divider">
+                        <%= link_to  "Se déconnecter", destroy_user_session_path, method: :delete, class: "navbar-item" %>
+                    </div>
+                </div>
+            <% end %>
+        </div>
+    </div>
+</nav>
+
+
+
+<% if (user_signed_in?) && !current_page?(root_path) && !current_page?(plans_path) && !current_page?(search_path) && !current_page?("/gigs/#{params[:id]}") && !current_page?("/users/#{params[:id]}") %>
+    <nav class="navbar has-shadow" style="z-index: 5">
+        <div class="container">
+            <div class="navbar">
+                <%= link_to 'Tableau de bord', dashboard_path, class: "navbar-item" %>
+                <%= link_to 'Commandes Ventes', selling_orders_path, class: "navbar-item" %>
+                <%= link_to 'Commandes Achats', buying_orders_path, class: "navbar-item" %>
+                <%= link_to 'Négotiations', negotiations_path, class: "navbar-item" %>
+            </div>
+        </div>
+
+    </nav>
+<% end %>
+
+
+<script>
+$(document).ready(function() {
+
+  // Check for click events on the navbar burger icon
+    $(".navbar-burger").click(function() {
+        // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+        $(".navbar-burger").toggleClass("is-active");
+        $(".navbar-menu").toggleClass("is-active");
+    });
+});
+
+
+</script>
+

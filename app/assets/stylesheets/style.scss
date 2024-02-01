@@ -1,0 +1,282 @@
+@import 'bulma';
+@import 'bulma-extensions';
+@import 'bulma-extensions/bulma-carousel/dist/css/bulma-carousel.min';
+@import 'noty/lib/noty';
+@import 'noty/lib/themes/sunset';
+@import 'dropzone/dist/basic.css';
+@import 'dropzone/dist/dropzone.css';
+@import 'raty-js/lib/jquery.raty';
+@import '@fullcalendar/core/main.css';
+@import '@fullcalendar/daygrid/main.css';
+@import '@fullcalendar/list/main.css';
+
+
+
+body {
+    background-color: #E7EDEF;
+    height: 100%;
+    width: 100%;
+}
+
+$spaceamounts: (0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 60, 70, 80, 90, 100);
+$sides: (top, bottom, left, right);
+
+@each $space in $spaceamounts {
+  @each $side in $sides {
+    .m-#{str-slice($side, 0, 1)}-#{$space} {
+      margin-#{$side}: #{$space}px !important;
+    }
+
+    .p-#{str-slice($side, 0, 1)}-#{$space} {
+      padding-#{$side}: #{$space}px !important;
+    }
+  }
+  .m-#{$space} {
+    margin: #{$space}px !important;
+  }
+
+  .p-#{$space} {
+    padding: #{$space}px !important;
+  }
+
+  .h-#{$space} {
+    margin-top: #{$space}px !important;
+    margin-bottom: #{$space}px !important;
+  }
+
+  .f-#{$space} {
+    font-size: #{$space}px !important;
+  }
+}
+
+.is-horizontal-center {
+  justify-content: center;
+}
+
+.small-title {
+  font-size: 10px;
+}
+
+.star-review {
+  color: #ffbf00;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.dropzone {
+  border: 2px dashed #0087F7 !important;
+  border-radius: 5px;
+  background: white;
+}
+
+.dropzone .dz-message {
+  font-weight: 400;
+}
+
+.dropzone .dz-message .note {
+  font-size: 0.8em;
+  font-weight: 200;
+  display: block;
+  margin-top: 1.4rem;
+}
+
+.form-container {
+  margin-left: 100px;
+  margin-right: 100px;
+}
+
+.pagination-link.is-current {
+  background-color: #00d1b2 !important;
+  border-color: #00d1b2 !important;
+}
+
+.has-bg-img {
+background: image_url('digital.jpg') center center; 
+  background-size: cover;
+}
+
+.avatar {
+  position: relative;
+  display: inline-block;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
+    border: 1px solid white;
+  }
+
+  &.online:before {
+    background-color: #1dbf73;
+  }
+
+  &.offline:before {
+    background-color: gray;
+  }
+}
+
+
+.conversation-message {
+  margin-bottom: 5px !important;
+  padding: 10px !important;
+  font-size: 15px;
+}
+
+.fc-past {
+  background-color: lightgrey;
+}
+
+
+.navbar-brand {
+  padding-left: 20px;
+  text-color: white;
+
+}
+
+// User profile public
+.user-desc {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+
+    .infos {
+        margin-left: 18px;
+    }
+}
+
+.user-info-widget {
+    text-align: center;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    min-height: 124px;
+    padding: 22px 0 30px;
+    margin-bottom: 70px;
+    background-color: $turquoise;
+
+    p {
+        color: #fff;
+        margin-bottom: 7px;
+    }
+
+    h3 {
+        color: #fff;
+        font-size: 36px;
+        font-weight: 500;
+    }
+}
+
+// Bulma mega menu
+.navbar-item.is-mega {
+  position: static;
+
+  .is-mega-menu-title {
+    margin-bottom: 0;
+    padding: .375rem 1rem;
+  }
+}
+
+.header-grey {
+    background-color: #E7EDEF;
+}
+
+// CSS formulaire
+.input-grey {
+    background: #f4f5f8;
+    border: none;
+    line-height: 50px;
+}
+
+//formulaire parametre
+.card-template {
+    padding: 20px 30px;
+    margin-bottom: 30px;
+    border: none;
+    -webkit-border-radius: 12px;
+    border-radius: 12px;
+    -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px #0000001a;
+    background-color: white;
+}
+
+.negotiation-offer-user {
+    background-color: #312782;
+    color: lightgrey;
+}
+
+.card-search-filters {
+    margin-bottom: 30px;
+    border: none;
+    -webkit-border-radius: 12px;
+    border-radius: 12px;
+    -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px #0000001a;
+    background-color: white;
+}
+
+// ANNONCES
+.annonces {
+    background: #fff;
+    -webkit-border-radius: 12px;
+    border-radius: 12px;
+    -webkit-box-shadow: 0 2px 4px rgba(108, 111, 115, 0.1);
+    box-shadow: 0 2px 4px rgba(108, 111, 115, 0.1);
+    margin-bottom: 30px;
+    border: none;
+}
+
+// Basket
+.basket_item_title {
+    padding: 30px;
+    border-bottom: 1px solid #ececec;
+}
+
+// Basket item
+.single_item {
+    padding: 30px;
+    border-bottom: 1px solid #ececec;
+}
+
+.basket-icon {
+    margin-right: 8px;
+}
+
+.logo-img {
+    max-height: 44px !important;
+}
+
+.review-container {
+    padding: 0px;
+}
+
+.review-stat {
+    border-radius: 4px;
+    background-color: #edebf9;
+    padding: 14px 18px;
+}
+
+.payment-method {
+    border-radius: 2px;
+    padding: 28px 18px;
+}
+
+#mtn {
+    background-color: #FDCB00;
+    color: black;
+}
+
+#airtel {
+    background-color: #E42D00;
+    color: white;
+}

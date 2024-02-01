@@ -1,0 +1,69 @@
+
+<section class="hero is-fullheight">
+    <div class="hero-body">
+        <div class="container">
+            <div class="card-header card-template">
+                <!-- Category -->
+                <div class="card-header-title">
+                    Creer une annonce pour un produit
+                </div>
+            </div>
+            <%= form_with(model: @gig, local: true, multipart: true) do |f| %>
+                <div class="columns">
+                    <div class="column is-6-table is-6-desktop is-6-widescreen">
+                        <div class="card-template">
+                            <div class="field">
+                                <h4 class="has-text-centered">Aperçu</h4>
+                            </div>
+                            <div class="field">
+                                <label class="label">Titre de l&#39;annonce</label>
+                                <%= f.text_field :title, autocomplete: "title", class: "input input-grey" %>
+                            </div>
+                            <div class="field">
+                                <label class="label">Catégorie</label>
+                                <div class="select">
+                                    <%= f.select(:category_id, options_for_select(@categories.map{ |c| [c.name, c.id] }, selected: @gig.category_id)) %>
+                                </div>
+                            </div>
+                            <div class="field is-one-third">
+                                <label class="label">Prix</label>
+                                <%= f.number_field :price, class: "input input-grey" %>
+                            </div>
+                            <div class="field is-one-third">
+                                <label class="label">Quantité</label>
+                                <%= f.number_field :stock, class: "input input-grey" %>
+                            </div>
+                            <div class="field">
+                                <label for="" class="label">Description</label>
+                                <%= f.text_area :description, class: "textarea input-grey" %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column is-6-table is-6-desktop is-6-widescreen">
+                        <div class="card-template">
+                            <div class="field">
+                                <h4 class="has-text-centered">Media</h4>
+                            </div>
+                            <div class="field">
+                                <label for="" class="label has-text-centered">Ajouter une gallerie a votre annonce</label>
+                                <div class="control">
+                                    <div class="dropzone dropzone-default dz-clickable" data-controller="dropzone" data-max-file-size="3" data-dropzone-max-file="4">
+                                        <%= f.file_field :photos, multiple: true, direct_upload: true, data: { target: "dropzone.input"} %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column">
+                        <div class="field is-grouped is-grouped-centered m-t-25">
+                            <a href="" data-nav="previous" class="button is-warning">Annuler</a>
+                            <%= f.submit "Enregistrer & continuer", class: "button is-primary" %>
+                        </div>
+                    </div>
+                </div>
+            <% end %>
+        </div>
+    </div>
+</section>

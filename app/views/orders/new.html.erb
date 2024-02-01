@@ -1,0 +1,57 @@
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column">
+                <div class="card-template">
+                    <%= form_for @order, url: {action: "create"} do |f| %>
+                        <% if @order.errors %>
+                            <% @order.errors.full_messages.each do |message| %>
+                                <%= message %>
+                                <br />
+                            <% end %>
+                        <% end %>
+                        <h4>Lieu de livraison</h4>
+                        <br>
+                        <div class="field">
+                            <%= f.text_field :address, placeholder: "Votre addresse pour la livraison", class: "input" %>
+                        </div>
+                        <br>
+                        
+                        <%= f.submit 'Confirmer votre commande', class: "button is-link is-light" %>
+                    <% end %>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="card-template">
+                    <h4>Commande(s)</h4>
+                    <br/>
+                    <% @basket.basket_items.each do |item| %>
+                        <article class="media">
+                            <figure class="media-left">
+                                <p class="image is-64x64">
+                                    <%= image_tag url_for(item.gig.photos.last)%>
+                                </p>
+                            </figure>
+                            <div class="media-content">
+                                <div class="content">
+                                    <strong><%= item.gig.title%></strong>
+                                    <br>
+                                    <strong><%= item.price%></strong>
+                                    <br>
+                                    Qtite: <strong><%= item.quantity%></strong>
+                                </div>
+                            </div>
+                        </article>  
+                    <% end %>  
+                    <hr/>  
+                    Sous-Total              : <%= @basket.total_price %> 
+                    <br> 
+                    Frais de livraison              : <%#= @basket.total_price %> 0
+                    <br>
+                    Total : <%= @basket.total_price %>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

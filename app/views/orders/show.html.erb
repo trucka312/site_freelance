@@ -1,0 +1,116 @@
+<section class="section" data-channel-subscribe="order" data-order-id="<%= @order.id %>">
+    <div class="container">
+        <div class="columns">
+            <% if false %>
+            <!-- LEFT SIDE -->
+            <div class="column is-two-thirds">
+                <p class="menu-label">
+                    Commenter votre commande
+                </p>
+                <hr>
+                <div id="comment-list">
+                 <% @comments.each do |c| %>
+                 <%= render 'orders/comment', comment: c %>
+                 <% end %>
+                </div>
+                <hr>
+
+                <article class="media">
+                    <figure class="media-left">
+                        <p class="image is-64x64">                            
+                         <%= image_tag avatar_url(current_user), class: "is-rounded" %>
+                        </p>
+                    </figure>
+                    <div class="media-content">
+                        <%= form_with model: Comment.new, id: "new-comment" do |f| %>
+                        <%= f.hidden_field :order_id, value: @order.id %>
+                        <div class="field">
+                         <%= f.text_area :content, class: "textarea", placeholder: "Laissé votre commentaire" %>
+                        </div>
+
+                        <div class="field is-pulled-left">
+                            <div class="file is-warning has-name">
+                                <label class="file-label">
+                                    <%= f.file_field :attachment_file, class: "file-input" %>
+                                    <span class="file-cta">
+                                        <span class="file-label">Attachement (optionnel) </span>
+                                    </span>
+                                    <br>
+                                    <span class="file-name" id="file-name">Aucun fichié sélectionné</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="field is-pulled-right">
+                        <%= f.submit "Poster le commentaire", class: "button is-primary" %>                            
+                        </div>
+                        <% end %>
+                    </div>
+                </article>
+            </div>
+            <% end %>
+            <div class="column is-two-thirds">
+                <h4>
+                    Revue du produit
+                </h4>
+                <% @order.reviews.each do |review| %>
+                    <div class="column is-full">
+                        <div class="card-template review-container">
+                            <div class="card-content">
+                                <article class="media">
+                                    <div class="media-content">
+                                        <%= review.review %>
+                                    </div>
+                                    <div class="media-right review-stat has-text-link">
+                                        <span class="is-8"><%= review.stars %></span> / 5
+                                    </div>
+                                </article>
+                            </div>
+                        </div>                        
+                    </div>
+                <% end %>
+            </div>
+
+            <!-- RIGHT SIDE -->
+            <div class="column is-one-third is-centered">
+                <div class="card">
+                    <div class="card-image">                        
+                        <figure class="image">
+                            <%= cl_image_tag(@gig.photos.first.key, :transformation => 
+    { :dpr => "auto", :responsive => true, :width => "auto", :crop => "scale"}) if @gig %>
+                            <%= image_tag 'icon_default_image.png' if @request %>
+                        </figure>
+                    </div>
+                    <div class="card-content">
+                        <p>
+                            <strong><%= @order.title %></strong>
+                            <strong class="title is-4 is-pulled-right has-text-success">Fcfa <%= @order.amount.to_i %> x <%= @order.quantity%></strong>
+                        </p>
+                        <br>
+                        <small>
+                            <p><strong>Vendeur:</strong> <%= @order.seller_name %></p>
+                            <p><strong>Code:</strong> <%= @order.id %></p>
+                            <p><strong>Address de livraison:</strong> <%= @order.address %></p>
+                            <p><strong>Commandé le: </strong><%= @order.created_at.strftime('%d, %b %Y')%></p> 
+                            <% if @order.completed?%> 
+                                <p><strong>Commandé livré </strong></p> 
+                            <% end %>
+                        </small>                    
+                    </div>                   
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<script>
+  $(document).ready(function() {
+    var file = $('.file-input');
+    file.change(function(e) {
+      if (file[0].files.length > 0) {
+        var attachment = file[0].files[0];
+        $('.file-name').text(attachment.name + " (" + attachment.size + "bytes)");
+      }
+    })
+  })
+</script>

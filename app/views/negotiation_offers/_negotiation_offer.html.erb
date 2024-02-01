@@ -1,0 +1,20 @@
+<div class="column is-half">
+    <% if @negotiation.status == "pending" %>
+        <% if negotiation_offer.user_id == current_user.id %>
+            <!-- Render user's offer partial -->
+            <%= render partial: "negotiation_offers/owner_offer", locals: {negotiation_offer: negotiation_offer} %>
+        <% elsif negotiation_offer.user_id != current_user.id && !negotiation_offer.replied %>
+            <!-- Render offer form partial -->
+            <%= render partial: "negotiation_offers/offer_form", locals: {negotiation_offer: negotiation_offer} %>
+        <% else %>
+            <!-- Render offer -->
+            <%= render partial: "negotiation_offers/offer", locals: {negotiation_offer: negotiation_offer} %>
+        <% end %>
+    <% elsif @negotiation.status == "accepted" %>
+        <!-- Render offer accepted partial -->
+        <%= render partial: "negotiation_offers/offer_accepted", locals: {negotiation_offer: negotiation_offer} %>
+    <% else %>
+        <!-- Render offer rejected partial -->
+        <%= render partial: "negotiation_offers/offer_rejected", locals: {negotiation_offer: negotiation_offer} %>
+    <% end %>
+</div>

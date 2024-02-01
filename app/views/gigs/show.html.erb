@@ -1,0 +1,128 @@
+<% content_for :head do %>
+<meta name="turbolinks-cache-control" content="no-cache">
+<% end %>
+
+<%= render 'shared/categories' %>
+
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <!-- LEFT SIDE -->
+            <div class="column is-three-fifths">
+                <div class="columns is-multiline">
+                    <!-- Carousel -->
+                    <div class="column is-full">   
+                        <div class="card annonces">
+                            <div class="card-content">
+                                <!--<div class="content">-->
+                                    <!--<p class="title is-4"><%= @gig.title %></p>-->
+                                <!--</div>-->
+
+                                <div class="hero-carousel" id="carousel-photo">
+                                
+                                    <% @gig.photos.each do |photo| %>
+                                        <%#= cl_image_tag(photo.key, class: "is-background", width: 200, crop: :scale) %>
+                                        <div class="carousel-item has-background">
+                                           <%= cl_image_tag(photo.key, :transformation => 
+    { :dpr => "auto", :responsive => true, :width => "auto", :crop => "scale"})%>
+                                        </div>
+                                    <% end %>
+                                    <% if @gig.video.present? %>
+                                        <div class="video-container">
+                                            <iframe src="https://www.youtube.com/embed/<%= @gig.video %>" allowfullscreen></iframe>
+                                        </div>
+                                    <% end %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Review Section -->
+                    <% @reviews.each do |review| %>
+                        <div class="column is-full">
+                            <div class="card-template review-container">
+                                <div class="card-content">
+                                    <article class="media">
+                                        <div class="media-content">
+                                            <%= review.review %>
+                                        </div>
+                                        <div class="media-right review-stat has-text-link">
+                                            <span class="is-8"><%= review.stars %></span> / 5
+                                        </div>
+                                    </article>
+                                </div>
+                            </div>                        
+                        </div>
+                    <% end %>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDE -->
+            <div class="column">
+                <div class="columns is-multiline">
+
+                <!-- Pricing Section -->
+                <div class="column is-full">
+                    <div class="tabs-content">
+                        <div class="tab-content">
+                            <div class="card card-template">
+                                <div class="card-content">
+                                    <div class="content">
+                                        <p class="title is-8 has-text-left" style="margin-bottom:0px;"><%= @gig.title.titleize %></p>
+                                        <p class="is-8 has-text-left has-text-grey-light">PAR <span style="color:#312682;"><%= link_to @gig.user.full_name.upcase, users_path(@gig.user) %></span></p>
+                                    </div>
+                                    <p class="title is-4 has-text-left has-text-grey-light"><span style="color:#312682;"><%= @gig.price %></span> Fcfa</p>
+                                    <p class="title is-4 has-text-left has-text-grey-light">Quantité: <span style="color:#312682;"><%= @gig.stock %></span></p>
+                                    <p  class="has-text-left has-text-grey-light><%= @gig.description %></p>
+                                    <% if (!user_signed_in? && @gig.active) || (user_signed_in? && @gig.active && @gig.user_id != current_user.id) %>
+                                        <%= button_to "Ajouter au pagner", basket_items_path(gig_id: @gig), class: "button is-fullwidth is-primary" %>
+                                        <br>
+                                        <%= form_with model: @negotiation, local: true do |f| %>
+                                            <%= f.hidden_field :gig_id, value: @gig.id %>
+                                            <%#= f.hidden_field :buyer_id, value: current_user.id %>
+                                            <%= f.hidden_field :seller_id, value: @gig.user.id %>
+                                            <div class="field is-one-third">
+                                                <label class="label">Négotier le prix</label>
+                                                <%= f.number_field :price, placeholder: "Insérer votre prix", class: "input input-grey" %>
+                                            </div>
+                                            <div class="control">    
+                                                <%= f.submit "Négotiatier", class: "button is-primary" %>
+                                            </div>
+                                        <% end %>
+                                    <% elsif (user_signed_in? && (@gig.user_id == current_user.id)) %>
+                                        <%= link_to "Editer", edit_gig_path, class: "button is-fullwidth is-primary" %>
+                                    <% else %>
+                                        <button class="button is-fullwidth is-danger" disabled>Non disponible</button>  
+                                    <% end %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    </div>
+</section>
+
+<script>
+  BulmaCarousel.attach('#carousel-photo', {
+    slidesToScroll: 1,
+    slidesToShow: 1
+  });
+
+  $(document).ready(function() {
+    $('#tabs li').on('click', function() {
+      var type = $(this).data('tab');
+
+      $('#tabs li').removeClass('is-active');
+      $(this).addClass('is-active');
+
+      $('.tab-content').hide();
+      $('#tab-' + type).show();
+    }) 
+  })
+
+</script>
+

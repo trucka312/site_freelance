@@ -1,0 +1,242 @@
+<section class="section">
+    <div class="container">
+        <div class="columns">
+
+            <!-- LEFT SIDE -->
+            <div class="column is-one-third">
+                <div class="columns is-multiline">
+
+                    <!-- Top Card -->
+                    <div class="column is-full">
+                        <div class="box">
+
+                            <!-- Avatar -->
+                            <div class="card-content is-horizontal-center is-flex">
+                                <figure class="image is-128x128">
+                                    <%= image_tag avatar_url(@user), class: "is-rounded" %>
+                                </figure>
+                            </div>
+
+                            <div class="card-content">
+
+                                <!-- Upload Button -->
+                                <div class="content has-text-centered">
+                                    <p class="title is-5"><%= @user.full_name %></p>
+                                    <% if current_user.id != @user.id %>
+                                    <a class="button is-black is-outlined is-fullwidth toggle-contact">Contact Me</a>
+                                    <% end %>
+                                </div>
+                                <hr class="h-10">
+
+                                <!-- Member -->
+                                <article class="media">
+                                    <div class="media-content">Member since</div>
+                                    <div class="media-right">
+                                        <strong><%= @user.created_at.strftime('%b %Y') %></strong>
+                                    </div>
+                                </article>
+                                <hr class="h-10">
+
+                                <!-- From -->
+                                <article class="media">
+                                    <div class="media-content">Location</div>
+                                    <div class="media-right">
+                                        <strong><%= @user.from %></strong>
+                                    </div>
+                                </article>                                
+                                <hr class="h-10">
+
+                                <!-- Online Status -->
+                                <article class="media">
+                                    <div class="media-content">Online Status</div>
+                                    <div class="media-right">
+                                        <strong><% if @user.status %> Online <% else %> Offline <% end %></strong>
+                                    </div>
+                                </article>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Card -->
+                    <div class="column is-full">
+                        <div class="card">
+                            <div class="card-content">
+
+                                <!-- About -->
+                                <article class="media">
+                                    <div class="media-content">
+                                        <p>
+                                            <strong>About Yourself</strong>
+                                            <br>
+                                            <%= @user.about %>
+                                        </p>
+                                    </div>
+                                </article>
+                                <hr class="h-10">
+
+                                <!-- Language -->
+                                <article class="media">
+                                    <div class="media-content">
+                                        <p>
+                                            <strong>Language</strong>
+                                            <br>
+                                            <%= @user.language %>
+                                        </p>
+                                    </div>
+                                </article>
+                                <hr class="h-10">
+
+                                <!-- Linked Account -->
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- RIGHT SIDE -->
+            <div class="column">
+
+                <div class="columns is-multiline">
+                    <!-- Sample Gig -->
+                    <% @user.gigs.each do |gig| %>
+
+                    <div class="column is-one-third">
+                        <div class="card">
+
+                            <div class="card-image">
+                                <%= link_to edit_gig_path(gig) do %>
+                                <figure class="image is-4by3">
+                                    <%= image_tag gig_cover(gig) %>
+                                </figure>
+                                <% end %>
+                            </div>
+
+                            <div class="card-content p-t-5 p-b-5">
+                                <p class="subtitle is-6 m-b-5"><%= link_to gig.title, gig_path(gig) %></p>
+                                <span class="star-review"><i class="fa fa-star"></i>
+                                    <%= gig.average_rating %>
+                                    <span class="has-text-primary">(<%= gig.reviews.count %>)</span>
+                                </span>                                        
+                            </div>
+
+                            <footer class="card-footer">
+                                <% basic_price = gig.pricings.find{ |p| p.pricing_type == 'basic' } %>
+
+                                <a class="has-text-danger is-block card-footer-item has-text-right">
+                                    <% if !basic_price.nil? %>
+                                    <span class="small-title">STARTING AT</span> 
+                                    <strong>$<%= basic_price.price %></strong>                                            
+                                    <% else %>
+                                    <strong>
+                                        <span class="small-title has-text-dark">NO PRICING YET</span>
+                                    </strong>
+                                    <% end %>
+                                </a>
+                            </footer>  
+
+                        </div>
+                    </div>
+
+                    <% end %>
+                </div>
+
+
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-header-title">Latest Reviews</div>
+                    </div>
+                    <div class="card-content">
+
+                        <!-- Sample Reviews -->
+                        <% @reviews.each do |r| %>
+                        <article class="media">
+                            <figure class="media-left">
+                                <p class="image is-64x64">
+                                    <%= image_tag avatar_url(r.buyer), class: "is-rounded" %>
+                                </p>
+                            </figure>
+
+                            <div class="media-content">
+                                <div class="content">
+                                    <p>
+                                        <strong><%= r.buyer.full_name %></strong><br>
+                                        <%= r.review %>
+                                    </p>
+                                    <small><%= time_ago_in_words(r.created_at) %></small>
+                                </div>
+                            </div>
+
+                            <div class="media-right">
+                                <span class="star-review"><i class="fa fa-star"></i> <%= r.stars %></span>
+                            </div>
+
+                        </article>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<div class="modal" id="contact-form">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+        <header class="modal-card-head">
+            <p class="modal-card-title">Send a Message</p>
+            <button class="delete toggle-contact" aria-label="close"></button>
+        </header>
+        <section class="modal-card-body">
+            <div class="columns">
+                <div class="column is-one-third">
+                    <div class="card" st>
+                        <div class="card-content is-horizontal-center is-flex">
+                            <figure class="image is-128x128">
+                                   <%= image_tag avatar_url(@user), class: "is-rounded" %>
+                            </figure>
+                        </div>
+                        <div class="card-content">
+                            <hr>
+                            <strong>Please include:</strong>
+                            <ul class="is-size-7" style="list-style:initial">
+                                <li>Project description</li>
+                                <li>Specific instructions</li>
+                                <li>Relevant files</li>
+                                <li>Your budget</li>
+                            </ul>
+                        </div>
+                     </div>
+                </div>   
+                <div class="column">
+                    <%= form_with model: Message.new do |f| %>
+                    <%= f.hidden_field :receiver_id, value: @user.id %>
+                    <div class="card-content">
+                        <div class="field">
+                            <div class="control">
+                          <%= f.text_area :content, class: "textarea" %>
+                            </div>
+                        </div>
+                        <%= f.submit "Send", class: "button is-danger is-pulled-right" %>
+                                                    
+                    </div>
+                    <% end %>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<script>
+    var toggle_modals = $('.toggle-contact');
+    if (toggle_modals) {
+        toggle_modals.on('click', function(event) {
+            event.stopPropagation();
+            event.preventDefault();
+            var form = document.getElementById('contact-form');
+            form.classList.toggle('is-active');
+        });
+    }
+</script>
